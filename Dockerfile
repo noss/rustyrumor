@@ -4,5 +4,5 @@ COPY . .
 RUN cargo build --release
 
 FROM gcr.io/distroless/cc
-COPY --from=release  /rustyrumor
+COPY --from=release /app/target/release/rustyrumor /rustyrumor
 ENTRYPOINT ["/rustyrumor"]
