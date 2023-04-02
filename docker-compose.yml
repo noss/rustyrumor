@@ -1,6 +1,8 @@
 version: "3.3"
 services:
   rustyrumor:
+    ports:
+      - "8000:8000"
     build:
       context: .
       args:
