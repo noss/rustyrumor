@@ -1,8 +1,25 @@
 version: "3.3"
 services:
-  web_rustyrumor:
-    ports:
-      - "8000:8000"
+  web:
     build:
       context: ./service
-
+    ports:
+      - "8000:8000"
+  postgres:
+    image: postgres:15.2
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${PWD}/sql:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: "rumor"
+      POSTGRES_PASSWORD: "postgres"
+  dbmate:
+    image: amacneil/dbmate
+    command: --wait migrate
+    environment:
+      DATABASE_URL: "postgres://postgres:5432/rumor?user=rumor&password=postgres&sslmode=disable"
+    volumes:
+      - ./db:/db
+    depends_on:
+    - postgres
